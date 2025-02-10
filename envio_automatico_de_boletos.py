@@ -1,112 +1,150 @@
-## FLUXO DO CÓDIGO
-# copiar CNPJ do nome do arquivo (boleto)
-# ir para o whatsapp
-# buscar contato pelo CNPJ
-# selecionar contato (tab)
-# recortar arquivo para o whatsapp (ctrl + x)
-# colar (enviar) para contato
-# pressionar enter
-# retornar para aba dos boletos (alt+tab)
-# arrow down
+# Abrir arquivo
+# identificar ângulo X e Y do arquivo
+# Copiar nome do pagante
+# fechar arquivo ctrl+w
+# Renomear arquivo f2
+# Apertar seta baixo
+# repetir processo 
+    
+# Biblioteca
 
 import pyautogui as py
 
-posicao_mouse_buscador = 0
-qtd_arquivos = 0
-auxiliador = 0
+# Variáveis
 
-def solicitacoes():
-    print("=========================")
-    input("Posicione o cursor do mouse no buscador do whatsapp: ")
+tempo_de_delay = 1  
+tempo_de_abertura = 3
+auxiliador = 1
 
-    global posicao_mouse_buscador
-    posicao_mouse_buscador = py.position()
+posicao_texto_inicial_x = 0
+posicao_texto_inicial_y = 0
 
-    input("Selecione o arquivo inicial (boleto) ")
-    
-def enviar_boleto(mes, ano): 
+posicao_texto_final_x = 0
+posicao_texto_final_y = 0
+
+computador_off = 0
+
+
+# APRESENTAÇÃO
+print("=========================")
+print("Este executável tem por finalidade automatizar renomeação de arquivos baseado nos parâmetros passados!")
+print("Estima-se que, por arquivo, será um total de 10 segundos.")
+print("=========================")
+
+def copia_texto():
     global auxiliador
-       
-    py.hotkey("f2")
-    py.PAUSE = 1
+    
+    py.moveTo(x=posicao_texto_inicial_x,y=posicao_texto_inicial_y)
+    py.PAUSE = tempo_de_delay
+    py.mouseDown()
+    py.PAUSE = tempo_de_delay
+    py.moveTo(x=posicao_texto_final_x, y=posicao_texto_final_y)
+    py.PAUSE = tempo_de_delay
+    py.mouseUp()
+    py.PAUSE = tempo_de_delay
     py.hotkey("ctrl","c")
-    py.PAUSE = 1
+    py.PAUSE = tempo_de_delay
+    py.hotkey("ctrl","w")
+    py.PAUSE = tempo_de_delay
+    py.press("f2")
+    py.PAUSE = tempo_de_delay
+    py.hotkey("ctrl","v")
+    py.PAUSE = tempo_de_delay
+    py.press("enter")
+    py.PAUSE = tempo_de_delay
     py.press("esc")
-    py.hotkey("alt","tab")
-    py.click(posicao_mouse_buscador[0], posicao_mouse_buscador[1])
-    py.PAUSE = 1
-    py.hotkey("ctrl","v")
-    py.PAUSE = 1
-    py.press("tab")
-    py.PAUSE = 1
-    py.press("enter")
-    # COPIANDO ARQUIVO - INICIO
-    py.hotkey("alt","tab")
-    py.PAUSE = 1
-    py.hotkey("ctrl","x")
-    py.PAUSE = 1
-    py.hotkey("alt","tab")
-    py.PAUSE = 1
-    py.hotkey("ctrl","v")
-    py.PAUSE = 1
-    py.write(f"Segue o anexo do mes de {mes} do ano {ano}")
-    # ENVIANDO ARQUIVO
-    py.press("enter")
-    # COPIANDO ARQUIVO - FINAL
-    py.PAUSE = 1
-    py.hotkey("alt","tab")
-    py.PAUSE = 1
+    py.PAUSE = tempo_de_delay
+    
     py.press("down")
-    py.PAUSE = 1
-    
+    py.PAUSE = tempo_de_delay
+    py.press("enter")
+    # py.PAUSE = tempo_de_delay
+    # py.press("enter")
     auxiliador = auxiliador + 1
-    
-# py.PAUSE = 1
-solicitacoes()
-escolha = input("(1) - Continuar\n(2) - Refazer operação\nDigite: ")
 
-while(True):
-    if(escolha == "1"):
+def perguntar_desligar_computador():
+    global computador_off
+    
+    computador_off = input("Gostaria que o computador fosse desligado após a operação?\n(1) - Sim\n(2) - Não\nDigite: ")
+    if(computador_off == "1"):
         print("=========================")
-        try:
-            qtd_arquivos = int(input("Informe a quantidade de arquivos (também será a quantidade de contatos) "))
-                        
-            # nome_executador = input("Informe o nome do executador: ")
-            mes_atual = input("Informe o mês referente ao pagamento: ")
-            ano_atual = input("Informe o ano referente ao pagamento: ")
-        except:
-            print("Opção inválida, informe um número válido")
-        print(f"{qtd_arquivos} serão enviados para os contatos")
+        print("O computador desligará após a execução do script")
+    elif(computador_off == "2"):
         print("=========================")
-        aceite = input("O Script será executado, deseja continuar?\n(1) - Sim\n(2) - Não\nDigite: ")
-        if(aceite == "1"):
-            py.hotkey("alt","tab")
-            py.PAUSE = 1
-            py.keyDown('alt')
-            py.press('tab')
-            py.PAUSE = 1
-            py.press('tab')
-            py.keyUp('alt')
-            py.PAUSE = 1
-            while(auxiliador < qtd_arquivos):
-                enviar_boleto(mes_atual, ano_atual)
-            break
-        elif(escolha == "2"):
-            print("Processo encerrado!")
-        else:
-            print("=========================")
-            print("Opção inválida...")
-    elif(escolha == "2"):
-        solicitacoes()
-        print("Posições gravadas!")
-        print("=========================")
-        escolha = input("Continuar - (1)\nRefazer operação - (2)\nDigite: ")
+        print("O computador não será desligado!")
     else:
         print("=========================")
-        print("Opção inválida...")
-print("finalizado")
+        print("Opção inválida")
+        perguntar_desligar_computador()
 
+def solicita_posicao_mouse():
+    
+    global posicao_texto_inicial_x
+    global posicao_texto_inicial_y
+    
+    global posicao_texto_final_x
+    global posicao_texto_final_y
+    
+    global escolha
+    
+    input("Abra o arquivo inicial e aperte 'Enter'\n(O navegador só pode ter uma aba aberta, que é a aba do arquivo): ")
+    print("=========================")
+    input("Posicione o cursor do mouse no inicio do texto a ser copiado: (Aperte Enter para continuar)")
+    texto_inicial = py.position()
+    print("=========================")
+    posicao_texto_inicial_x = texto_inicial[0]
+    posicao_texto_inicial_y = texto_inicial[1]
 
-# py.moveTo(posicao_mouse_buscador[0], posicao_mouse_buscador[1])
-# py.PAUSE = 2
-# py.click()
+    input("Posicione o cursor do mouse no final do texto a ser copiado: ")
+    texto_final = py.position()
+    print("=========================")
+    posicao_texto_final_x = texto_final[0]
+    posicao_texto_final_y = texto_final[1]
+    
+    escolha = input("(1) - Continuar\n(2) - Refazer operação\nDigite: ")
+    if(escolha == "1"):
+        print("Posições gravadas!")
+        return "1"
+    elif(escolha == "2"):
+        print("=========================")
+        print("Refazendo operação")
+        solicita_posicao_mouse()
+    else:
+        print("Opção inválida")
+        print("=========================")
+        solicita_posicao_mouse()
+
+perguntar_desligar_computador()
+
+while(True):
+    solicita_posicao_mouse()
+    print("=========================")
+    qtd_arquivos = int(input("Informe a quantidade de arquivos: "))
+    print(f"{qtd_arquivos} serão nomeados.") 
+    print("=========================")
+    aceite = input("O Script será executado, deseja continuar?\n(1) - Sim\n(2) - Não\nDigite: ")
+    match aceite: 
+        case "1":
+            py.hotkey("alt","tab")
+            py.PAUSE = tempo_de_delay
+            py.press("enter")
+            py.PAUSE = tempo_de_abertura
+            while auxiliador <= qtd_arquivos: 
+                copia_texto()
+            break
+        case "2":
+                print("Processo encerrado!")
+        case _:
+            print("=========================")
+            print("Opção inválida...")
+    
+        
+if(computador_off == "1"):
+    py.PAUSE = 2
+    py.hotkey("win","d")
+    py.Pause = 2
+    py.hotkey("alt","f4")
+    py.Pause = 2
+    py.press("enter")
+print("Execução finalizada!")
+        
