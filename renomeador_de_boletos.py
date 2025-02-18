@@ -15,6 +15,7 @@ import pyautogui as py
 tempo_de_delay = 1  
 tempo_de_abertura = 3
 auxiliador = 1
+tempo_total = 0
 
 posicao_texto_inicial_x = 0
 posicao_texto_inicial_y = 0
@@ -27,8 +28,14 @@ computador_off = 0
 
 # APRESENTAÇÃO
 print("=========================")
-print("Este executável tem por finalidade automatizar renomeação de arquivos baseado nos parâmetros passados!")
-print("Estima-se que, por arquivo, será um total de 10 segundos.")
+print("Este programa tem como objetivo automatizar a renomeação de arquivos com base nos parâmetros fornecidos.")
+print("A estimativa é de que o processo levará cerca de 15 segundos por arquivo.")
+print("Instruções importantes:")
+print("1 - Para alternar entre janelas, use 'Alt + Tab'.")
+print("2 - Durante o processo de alternância de pastas, evite usar o mouse.")
+print("3 - Certifique-se de que a alternância de janelas ocorra do terminal para a página de boletos (usando 'Alt + Tab').")
+print("4 - Você pode alternar entre o terminal e a página que contém os boletos usando 'Alt + Tab'.")
+
 print("=========================")
 
 def copia_texto():
@@ -72,6 +79,7 @@ def perguntar_desligar_computador():
     elif(computador_off == "2"):
         print("=========================")
         print("O computador não será desligado!")
+        print("=========================")
     else:
         print("=========================")
         print("Opção inválida")
@@ -87,15 +95,15 @@ def solicita_posicao_mouse():
     
     global escolha
     
-    input("Abra o arquivo inicial e aperte 'Enter'\n(O navegador só pode ter uma aba aberta, que é a aba do arquivo): ")
+    input("Ação - Selecione o arquivo inicial e aperte enter no terminal\nDica¹ - Pressione Alt + Tab e clique, só uma vez, no arquivo\nDica² - Após a 1° dica, pressiona Alt + Tab e aperte 'Enter' no terminal")
     print("=========================")
-    input("Posicione o cursor do mouse no inicio do texto a ser copiado: (Aperte Enter para continuar)")
+    input("Ação - Posicione o cursor do mouse no início do texto que será copiado\nDica¹ - Pressione Alt + Tab e mova o cursor do mouse até o início do texto a ser copiado\nDica² - Após a 1° dica, pressiona Alt + Tab e aperte 'Enter' no terminal (Sem  mover o mouse)")
     texto_inicial = py.position()
     print("=========================")
     posicao_texto_inicial_x = texto_inicial[0]
     posicao_texto_inicial_y = texto_inicial[1]
 
-    input("Posicione o cursor do mouse no final do texto a ser copiado: ")
+    input("Ação - Posicione o cursor do mouse no final do texto que será copiado\nDica¹ - Pressione Alt + Tab e mova o cursor do mouse até o final do texto a ser copiado\nDica² - Após a 1° dica, pressiona Alt + Tab e aperte 'Enter' no terminal (Sem  mover o mouse)")
     texto_final = py.position()
     print("=========================")
     posicao_texto_final_x = texto_final[0]
@@ -103,6 +111,7 @@ def solicita_posicao_mouse():
     
     escolha = input("(1) - Continuar\n(2) - Refazer operação\nDigite: ")
     if(escolha == "1"):
+        print("=========================")
         print("Posições gravadas!")
         return "1"
     elif(escolha == "2"):
@@ -121,6 +130,14 @@ while(True):
     print("=========================")
     qtd_arquivos = int(input("Informe a quantidade de arquivos: "))
     print(f"{qtd_arquivos} serão nomeados.") 
+    print("=========================")
+    tempo_total = qtd_arquivos * 11
+    if(tempo_total < 60):
+        print(f"Demorará {tempo_total} segundos")
+    elif(tempo_total < 3600):
+        print(f"Demorará {round((tempo_total / 60),2)} minutos")
+    else:
+        print(f"Demorará {round((tempo_total / 3600),2)} horas")
     print("=========================")
     aceite = input("O Script será executado, deseja continuar?\n(1) - Sim\n(2) - Não\nDigite: ")
     match aceite: 
