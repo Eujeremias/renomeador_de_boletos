@@ -9,16 +9,6 @@
 # Biblioteca
 
 import pyautogui as py
-from colorama  import Fore, init, Style
-
-init()
-
-color ={
-    "yellow": Fore.YELLOW,
-    "blue": Fore.BLUE,
-    "red": Fore.RED,
-    "reset": Fore.RESET,
-}
 
 # Variáveis
 
@@ -86,7 +76,7 @@ def perguntar_desligar_computador():
         print("O computador desligará após a execução do script")
     elif(computador_off == "2"):
         print("=========================")
-        print(Fore.RED + "O computador não será desligado!" + Style.RESET_ALL)
+        print("O computador não será desligado!")
         print("=========================")
     else:
         print("=========================")
@@ -109,11 +99,14 @@ def solicita_posicao_mouse():
     posicao_texto_inicial_x = texto_inicial[0]
     posicao_texto_inicial_y = texto_inicial[1]
 
-    input("Etapa² - Posicione o cursor do mouse no início do texto que será copiado.\nApós isso, para voltar ao terminal, pressione 'Alt + Tab' e pressione 'Enter' no terminal")
+    input("Etapa² - Posicione o cursor do mouse no final do texto que será copiado.\nApós isso, para voltar ao terminal, pressione 'Alt + Tab' e pressione 'Enter' no terminal")
     texto_final = py.position()
     print("=========================")
     posicao_texto_final_x = texto_final[0]
     posicao_texto_final_y = texto_final[1]
+    
+    input("Após tudo isso, feche a ferramenta que utiliza para visualizar os boletos\nGaranta que só a pasta de boletos esteja aberta")
+    print("=========================")
     
     escolha = input("(1) - Continuar\n(2) - Refazer operação\nDigite: ")
     if(escolha == "1"):
@@ -139,11 +132,11 @@ while(True):
     print("=========================")
     tempo_total = qtd_arquivos * 15 # 15 equivale ao tempo por arquivo
     if(tempo_total < 60):
-        print(f"{Fore.RED}Demorará {tempo_total} segundos {Style.RESET_ALL}")
+        print(f"Demorará {tempo_total} segundos")
     elif(tempo_total < 3600):
-        print(f"{Fore.RED}Demorará {round((tempo_total / 60),2)} minutos {Style.RESET_ALL}")
+        print(f"Demorará {round((tempo_total / 60),2)} minutos")
     else:
-        print(f"{Fore.RED}Demorará {round((tempo_total / 3600),2)} horas{Style.RESET_ALL}")
+        print(f"Demorará {round((tempo_total / 3600),2)} horas")
     print("=========================")
     aceite = input("O Script será executado, deseja continuar?\n(1) - Sim\n(2) - Não\nDigite: ")
     match aceite: 
